@@ -1,5 +1,12 @@
 @import-normalize; /* bring in normalize.css styles */
 
+html,
+body,
+#root,
+.App {
+	height: 100%;
+}
+
 body {
 	margin: 0;
 	font-family: 'Montserrat', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
