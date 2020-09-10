@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Label, Input, Button } from '../common';
-import { Container, Row, Col, Visible } from 'react-grid-system';
+import { Visible } from 'react-grid-system';
 
 const Form = (props) => (
 	<React.Fragment>
@@ -38,7 +38,9 @@ const Form = (props) => (
 				justifyContent: 'center',
 			}}
 		>
-			<Button style={{ alignSelf: 'center' }}>Host</Button>
+			<Button style={{ alignSelf: 'center' }} onClick={props.onHost}>
+				Host
+			</Button>
 		</div>
 	</React.Fragment>
 );
