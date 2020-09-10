@@ -1,6 +1,6 @@
 import React from 'react';
-import { createConnection } from '../utils/socket';
-import WelcomeView from '../components/Welcome/WelcomeView';
+import { createConnection } from '../../utils/socket';
+import WelcomeView from './WelcomeView';
 
 class Welcome extends React.Component {
 	constructor(props) {
