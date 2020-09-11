@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Visible } from 'react-grid-system';
-import Room from './containers/Room';
+import Room from './components/Room/Room';
 import Welcome from './components/Welcome/Welcome';
 import Footer from './components/common/Footer';
 
