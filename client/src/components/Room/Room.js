@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { Container, Row, Col, Hidden } from 'react-grid-system';
+import Topbar from '../common/Topbar';
+import Player from './Player';
+import Chat from './Chat/Chat';
 import { createConnection } from '../../utils/socket';
-/* Connection establishement steps are defined in utils/webrtc.js */
 
 function Room(props) {
 	const [isHost, setHost] = useState(false);
@@ -44,12 +47,28 @@ function Room(props) {
 	};
 
 	const bindEvents = () => {
+		if (!socket) return;
+
 		socket.on('new_connection', (data) => {
 			console.log('new user connected', data);
 		});
 	};
 
-	return <h1>Hello I am Room</h1>;
+	return (
+		<React.Fragment>
+			<Topbar />
+			<Container fluid style={{ margin: '0 3%' }}>
+				<Row>
+					<Col md={8}>
+						<Player />
+					</Col>
+					<Col md={4}>
+						<Chat />
+					</Col>
+				</Row>
+			</Container>
+		</React.Fragment>
+	);
 }
 
 export default Room;
