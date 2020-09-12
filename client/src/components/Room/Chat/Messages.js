@@ -1,11 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 function Messages(props) {
+	let messageEnd = null;
+	const { messages } = props;
+
+	const scrollToBottom = () => {
+		if (messageEnd) {
+			messageEnd.scrollIntoView({ behavior: 'smooth' });
+		}
+	};
+
+	useEffect(() => scrollToBottom(), [messages]);
+
 	return (
 		<MessagesContainer>
-			<Message user='Jami'>Hello how are you?</Message>
-			<Message user='Samyo'>I am fine thank you</Message>
+			{messages.map((message) => (
+				<Message user={message.from} key={message.id}>
+					{message.text}
+				</Message>
+			))}
+			<div className='dummy' ref={(el) => (messageEnd = el)}></div>
 		</MessagesContainer>
 	);
 }

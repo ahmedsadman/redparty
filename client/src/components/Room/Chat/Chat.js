@@ -58,9 +58,7 @@ const StyledChat = styled.div`
 
 const MessageSend = styled.form`
 	display: flex;
-	padding-top: 10px;
 	flex-direction: row;
-	margin: 5px 0;
 `;
 
 export default Chat;
