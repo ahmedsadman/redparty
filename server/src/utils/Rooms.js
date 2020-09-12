@@ -13,25 +13,34 @@ class Rooms {
 	}
 
 	addUser(roomId, name, userId) {
-		this.rooms[roomId]['users'].push({ name, id: userId });
+		this.rooms[roomId]['users'].push({ name, id: userId, roomId });
 		this.userMap[userId] = roomId;
 	}
 
 	removeUser(userId) {
 		const roomId = this.userMap[userId];
+		let _user = null;
+
 		if (roomId) {
 			// remove user from the room
 			const users = this.rooms[roomId]['users'];
-			this.rooms[roomId]['users'] = users.filter(
-				(user) => user.id !== userId
-			);
+			this.rooms[roomId]['users'] = users.filter((user) => {
+				if (user.id === userId) {
+					_user = user;
+				}
+				return user.id !== userId;
+			});
 
 			// remove user from the user-room mapping
 			delete this.userMap[userId];
 
 			// remove room if applicable
 			this.removeRoom(roomId);
+
+			return _user;
 		}
+
+		return null;
 	}
 
 	removeRoom(roomId) {
@@ -39,7 +48,10 @@ class Rooms {
 	}
 
 	getUserList(roomId) {
-		return this.rooms[roomId]['users'];
+		const room = this.rooms[roomId];
+		if (room) {
+			return room['users'];
+		}
 	}
 
 	showInfo() {

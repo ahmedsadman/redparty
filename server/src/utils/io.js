@@ -1,4 +1,8 @@
 const Rooms = require('./Rooms');
+const {
+	generateServerMessage,
+	generateUserMessage,
+} = require('../utils/message');
 
 exports.setupIO = (io) => {
 	io.on('connection', (socket) => {
@@ -7,21 +11,46 @@ exports.setupIO = (io) => {
 		socket.on('join', (data) => {
 			console.log('joining user', data);
 			const { roomId, name, userId } = data;
+			console.log(`User ${name} just joined in room ${roomId}`);
 			socket.join(roomId);
 			Rooms.addRoom(roomId);
 			Rooms.addUser(roomId, name, userId); // data.userId = socket.id
-			Rooms.showInfo();
+			// Rooms.showInfo();
 
 			// emit to all except the joined user
-			socket.broadcast
-				.to(roomId)
-				.emit('new_connection', { roomId, name, userId });
+			socket.broadcast.to(roomId).emit(
+				'newMessage',
+				generateServerMessage('userJoin', {
+					roomId,
+					name,
+					userId,
+				})
+			);
+
+			// tell everyone in the room to update their userlist
+			io.to(roomId).emit('updateUserList', Rooms.getUserList(roomId));
 		});
 
 		socket.on('disconnect', () => {
 			console.log('User disconnected');
-			Rooms.removeUser(socket.id);
-			Rooms.showInfo();
+			const user = Rooms.removeUser(socket.id);
+			// Rooms.showInfo();
+			console.log(`${user.name} has left`);
+
+			io.to(user.roomId).emit(
+				'newMessage',
+				generateServerMessage('userLeft', {
+					name: user.name,
+					userId: user.id,
+					roomId: user.roomId,
+				})
+			);
+
+			// tell everyone in the room to update their userlist
+			io.to(user.roomId).emit(
+				'updateUserList',
+				Rooms.getUserList(user.roomId)
+			);
 		});
 	});
 };
