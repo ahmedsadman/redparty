@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Participants from './Participants';
 import Messages from './Messages';
 import { Input } from '../../common/FormControls';
 import { Button } from '../../common';
+import { UserContext } from '../../../contexts/UserContext';
 
 function Chat() {
+	const { userData } = useContext(UserContext);
 	return (
 		<StyledChat>
-			<Participants />
+			<Participants users={userData.userList} />
 			<Messages />
 			<MessageSend>
 				<Input

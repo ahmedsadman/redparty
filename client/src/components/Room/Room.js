@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Swal from 'sweetalert2';
 import { Container, Row, Col, Hidden } from 'react-grid-system';
 import Topbar from '../common/Topbar';
 import Player from './Player';
 import Chat from './Chat/Chat';
 import { createConnection } from '../../utils/socket';
+import { UserContext } from '../../contexts/UserContext';
 
 function Room(props) {
 	const [isHost, setHost] = useState(false);
 	const [userList, setUserList] = useState([]);
+	const { dispatch } = useContext(UserContext);
 
 	let myConn = null;
 	let _isHost = false;
@@ -49,8 +51,17 @@ function Room(props) {
 	const bindEvents = () => {
 		if (!socket) return;
 
-		socket.on('new_connection', (data) => {
-			console.log('new user connected', data);
+		socket.on('newMessage', (data) => {
+			if (data.type === 'userJoin') {
+				console.log('New User Joined', data.payload);
+			} else if (data.type === 'userLeft') {
+				console.log('User Left', data.payload);
+			}
+		});
+
+		socket.on('updateUserList', (userList) => {
+			console.log('new user list', userList);
+			dispatch({ type: 'UPDATE_USER_LIST', users: userList });
 		});
 	};
 

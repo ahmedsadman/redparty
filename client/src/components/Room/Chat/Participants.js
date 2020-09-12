@@ -1,16 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function Participants() {
+function Participants(props) {
+	console.log('particpants props', props);
 	return (
 		<React.Fragment>
 			<div>
 				<strong>Participants</strong>
 			</div>
 			<ParticipantInfo>
-				<Box>Jami</Box>
-				<Box>Samyo</Box>
-				<Box>Tahmid</Box>
+				{props.users.map((user) => (
+					<Box>{user.name}</Box>
+				))}
 			</ParticipantInfo>
 			<div
 				style={{
