@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import Participants from './Participants';
 import Messages from './Messages';
@@ -6,19 +6,38 @@ import { Input } from '../../common/FormControls';
 import { Button } from '../../common';
 import { UserContext } from '../../../contexts/UserContext';
 
-function Chat() {
+function Chat(props) {
+	const { socket } = props;
 	const { userData } = useContext(UserContext);
+	const [message, setMessage] = useState('');
+
+	const onMessageSend = (evt) => {
+		evt.preventDefault();
+		socket.emit('createMessage', message);
+		console.log('message sent', message);
+		setMessage('');
+	};
+
+	const onMessageChange = (evt) => {
+		setMessage(evt.target.value);
+	};
+
 	return (
 		<StyledChat>
 			<Participants users={userData.userList} />
-			<Messages />
-			<MessageSend>
+			<Messages messages={userData.messages} />
+			<MessageSend onSubmit={onMessageSend}>
 				<Input
 					type='text'
 					placeholder='Send a message!'
 					style={{ fontSize: '0.8em', fontWeight: 500 }}
+					value={message}
+					onChange={onMessageChange}
+					required
 				/>
-				<Button style={{ fontSize: '0.8em' }}>Send</Button>
+				<Button type='submit' style={{ fontSize: '0.8em' }}>
+					Send
+				</Button>
 			</MessageSend>
 		</StyledChat>
 	);
@@ -37,7 +56,7 @@ const StyledChat = styled.div`
 	box-sizing: border-box;
 `;
 
-const MessageSend = styled.div`
+const MessageSend = styled.form`
 	display: flex;
 	padding-top: 10px;
 	flex-direction: row;

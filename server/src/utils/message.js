@@ -6,9 +6,10 @@ const generateServerMessage = (type, payload = {}) => {
 	};
 };
 
-const generateUserMessage = (from, text) => {
+const generateUserMessage = (from, id, text) => {
 	return {
 		type: 'userMessage',
+		id,
 		from,
 		text,
 		timestamp: Date.now(),

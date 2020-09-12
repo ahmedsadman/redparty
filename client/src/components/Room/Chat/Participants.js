@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 function Participants(props) {
-	console.log('particpants props', props);
 	return (
 		<React.Fragment>
 			<div>
@@ -10,7 +9,7 @@ function Participants(props) {
 			</div>
 			<ParticipantInfo>
 				{props.users.map((user) => (
-					<Box>{user.name}</Box>
+					<Box key={user.id}>{user.name}</Box>
 				))}
 			</ParticipantInfo>
 			<div

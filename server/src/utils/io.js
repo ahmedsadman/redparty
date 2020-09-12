@@ -31,6 +31,18 @@ exports.setupIO = (io) => {
 			io.to(roomId).emit('updateUserList', Rooms.getUserList(roomId));
 		});
 
+		socket.on('createMessage', (message) => {
+			const user = Rooms.getUser(socket.id);
+
+			if (user) {
+				io.to(user.roomId).emit(
+					'newMessage',
+					generateUserMessage(user.name, user.id, message)
+				);
+				console.log('new message received', message);
+			}
+		});
+
 		socket.on('disconnect', () => {
 			console.log('User disconnected');
 			const user = Rooms.removeUser(socket.id);

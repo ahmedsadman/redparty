@@ -9,13 +9,12 @@ import { UserContext } from '../../contexts/UserContext';
 
 function Room(props) {
 	const [isHost, setHost] = useState(false);
-	const [userList, setUserList] = useState([]);
+	const [socket, setSocket] = useState(null);
 	const { dispatch } = useContext(UserContext);
 
-	let myConn = null;
 	let _isHost = false;
 	let username = null;
-	let socket = null;
+	let _socket = null;
 
 	useEffect(() => {
 		console.log(props);
@@ -35,31 +34,34 @@ function Room(props) {
 			});
 			username = usernamePrompt.value;
 			const roomId = props.match.params.id;
-			socket = await createConnection(username, roomId);
+			_socket = await createConnection(username, roomId);
 			console.log('not host');
 		} else {
 			_isHost = true;
-			socket = props.location.socket;
+			_socket = props.location.socket;
 			console.log('host');
 		}
 
-		// add myself to connection list and update states
 		setHost(_isHost);
+		setSocket(_socket);
 		bindEvents();
 	};
 
 	const bindEvents = () => {
-		if (!socket) return;
+		if (!_socket) return;
 
-		socket.on('newMessage', (data) => {
+		_socket.on('newMessage', (data) => {
 			if (data.type === 'userJoin') {
 				console.log('New User Joined', data.payload);
 			} else if (data.type === 'userLeft') {
 				console.log('User Left', data.payload);
+			} else if (data.type === 'userMessage') {
+				console.log('user message', data);
+				dispatch({ type: 'UPDATE_MESSAGES', data });
 			}
 		});
 
-		socket.on('updateUserList', (userList) => {
+		_socket.on('updateUserList', (userList) => {
 			console.log('new user list', userList);
 			dispatch({ type: 'UPDATE_USER_LIST', users: userList });
 		});
@@ -74,7 +76,7 @@ function Room(props) {
 						<Player />
 					</Col>
 					<Col md={4}>
-						<Chat />
+						<Chat socket={socket} />
 					</Col>
 				</Row>
 			</Container>

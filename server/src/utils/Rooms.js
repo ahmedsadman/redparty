@@ -4,7 +4,7 @@ class Rooms {
         roomId = hosts's socket id
     */
 	constructor() {
-		this.rooms = {};
+		this.rooms = {}; // { users: [...{name, id, roomId}], videoURL: ''}
 		this.userMap = {}; // maps socket id to rooms
 	}
 
@@ -52,6 +52,12 @@ class Rooms {
 		if (room) {
 			return room['users'];
 		}
+	}
+
+	getUser(userId) {
+		const room = this.userMap[userId];
+		const users = this.getUserList(room);
+		return users.find((user) => user.id === userId);
 	}
 
 	showInfo() {
