@@ -47,14 +47,32 @@ function Room(props) {
 		bindEvents();
 	};
 
+	const showToast = (icon, text) => {
+		const Toast = Swal.mixin({
+			toast: true,
+			position: 'top',
+			showConfirmButton: false,
+			timer: 4000,
+			timerProgressBar: true,
+		});
+
+		Toast.fire({
+			icon,
+			title: text,
+		});
+	};
+
 	const bindEvents = () => {
 		if (!_socket) return;
 
 		_socket.on('newMessage', (data) => {
 			if (data.type === 'userJoin') {
-				console.log('New User Joined', data.payload);
+				showToast(
+					'success',
+					`${data.payload.name} has joined the room`
+				);
 			} else if (data.type === 'userLeft') {
-				console.log('User Left', data.payload);
+				showToast('info', `${data.payload.name} left the room`);
 			} else if (data.type === 'userMessage') {
 				console.log('user message', data);
 				dispatch({ type: 'UPDATE_MESSAGES', data });
