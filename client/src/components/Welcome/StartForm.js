@@ -8,7 +8,7 @@ import { colors } from '../../config/colors';
 function CustomForm(props) {
 	const { onSubmit, buttonLabel, header } = props;
 	return (
-		<form>
+		<form onSubmit={onSubmit}>
 			<Card padding='20px'>
 				<Header>{header}</Header>
 				{props.children}
@@ -21,7 +21,6 @@ function CustomForm(props) {
 					<Button
 						type='submit'
 						style={{ alignSelf: 'center', marginTop: '30px' }}
-						onClick={onSubmit}
 						secondary
 					>
 						{buttonLabel}
