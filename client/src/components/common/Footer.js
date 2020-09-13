@@ -40,6 +40,7 @@ const StyledFooter = styled.div`
 	align-items: center;
 	justify-content: center;
 	font-size: 0.9em;
+	font-weight: 500;
 	flex-wrap: wrap;
 	padding: 0 5%;
 	text-align: center;

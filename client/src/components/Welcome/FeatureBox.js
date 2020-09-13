@@ -33,7 +33,7 @@ const Box = (props) => (
 			style={{
 				fontSize: '2em',
 				paddingBottom: '10px',
-				color: colors.accentColor,
+				color: colors.primaryColor,
 			}}
 		></ion-icon>
 		<div>{props.children}</div>
@@ -49,12 +49,12 @@ const StyledBox = styled.div`
 	text-align: center;
 	justify-content: center;
 	border-radius: 10px;
-	border: 1px solid #ddd;
 	margin-bottom: 15px;
 	flex-direction: column;
 	font-size: 0.9em;
+	font-weight: 500;
 	box-sizing: border-box;
-	box-shadow: 1px 1px 3px #ddd;
+	box-shadow: 1px 1px 2px #ddd;
 `;
 
 export default FeatureBox;

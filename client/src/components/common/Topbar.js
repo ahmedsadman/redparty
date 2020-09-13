@@ -17,8 +17,8 @@ const Topbar = (props) => (
 const StyledBar = styled.div`
 	display: flex;
 	flex: 1;
-	height: 60px;
-	box-shadow: 2px 2px 5px gray;
+	height: 8vh;
+	box-shadow: 2px 2px 5px #ddd;
 	align-items: center;
 	justify-content: center;
 	font-size: 1.8em;
