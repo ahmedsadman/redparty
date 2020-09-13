@@ -11,11 +11,6 @@ import { colors } from '../../config/colors';
 function Welcome(props) {
 	// const [canRedirectToRoom, setRedirect] = useState(false);
 	let formEnd = null;
-	const [username, setUsername] = useState('');
-
-	const onInputChange = (e) => {
-		setUsername(e.target.value);
-	};
 
 	const scrollToForm = () => {
 		if (formEnd) {
@@ -23,7 +18,7 @@ function Welcome(props) {
 		}
 	};
 
-	const onHost = async () => {
+	const onHost = async (username) => {
 		// use socket id as room address
 		const socket = await createConnection(username);
 		props.history.push({
@@ -75,7 +70,7 @@ function Welcome(props) {
 			<Container fluid>
 				<Row align='center' style={styles.formContainer}>
 					<Col md={2}></Col>
-					<StartForm />
+					<StartForm onHost={onHost} />
 					<Col md={2}></Col>
 					<div className='dummy' ref={(el) => (formEnd = el)}></div>
 				</Row>

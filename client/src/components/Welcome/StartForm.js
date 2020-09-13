@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Label, Input, Button, Card } from '../common';
 import { Container, Row, Col, Hidden } from 'react-grid-system';
@@ -32,61 +32,77 @@ function CustomForm(props) {
 	);
 }
 
-const Forms = (props) => (
-	<React.Fragment>
-		<Col md={3}>
-			<CustomForm buttonLabel='Host' header='Start a party!'>
-				<Controls>
-					<Label htmlFor='username'>Display Name</Label>
-					<Input
-						type='text'
-						name='username'
-						value={props.username}
-						onChange={props.onChange}
-						id='name'
-						placeholder='Display Name'
-					/>
-				</Controls>
-				<Controls>
-					<Label htmlFor='url'>Youtube URL</Label>
-					<Input
-						type='text'
-						name='url'
-						id='url'
-						placeholder='Youtube URL or Join ID'
-					/>
-				</Controls>
-			</CustomForm>
-		</Col>
-		<Col md={2} align='center'>
-			<BigHeader>...Or...</BigHeader>
-		</Col>
-		<Col md={3}>
-			<CustomForm buttonLabel='Join' header='Join existing one!'>
-				<Controls>
-					<Label htmlFor='username'>Display Name</Label>
-					<Input
-						type='text'
-						name='username'
-						value={props.username}
-						onChange={props.onChange}
-						id='name'
-						placeholder='Display Name'
-					/>
-				</Controls>
-				<Controls>
-					<Label htmlFor='url'>Room ID</Label>
-					<Input
-						type='text'
-						name='url'
-						id='url'
-						placeholder='Youtube URL or Join ID'
-					/>
-				</Controls>
-			</CustomForm>
-		</Col>
-	</React.Fragment>
-);
+const Forms = (props) => {
+	const [hostDisplayName, setHostDisplayName] = useState('');
+	const [joinDisplayName, setJoinDisplayName] = useState('');
+
+	const _onHost = (e) => {
+		e.preventDefault();
+		props.onHost(hostDisplayName);
+	};
+
+	return (
+		<React.Fragment>
+			<Col md={3}>
+				<CustomForm
+					buttonLabel='Host'
+					header='Start a party!'
+					onSubmit={_onHost}
+				>
+					<Controls>
+						<Label htmlFor='username1'>Display Name</Label>
+						<Input
+							type='text'
+							name='username1'
+							value={hostDisplayName}
+							onChange={(e) => setHostDisplayName(e.target.value)}
+							id='name1'
+							placeholder='Display Name'
+							required
+						/>
+					</Controls>
+					<Controls>
+						<Label htmlFor='url'>Youtube URL</Label>
+						<Input
+							type='text'
+							name='url'
+							id='url'
+							placeholder='Youtube URL or Join ID'
+						/>
+					</Controls>
+				</CustomForm>
+			</Col>
+			<Col md={2} align='center'>
+				<BigHeader>...Or...</BigHeader>
+			</Col>
+			<Col md={3}>
+				<CustomForm buttonLabel='Join' header='Join existing one!'>
+					<Controls>
+						<Label htmlFor='username2'>Display Name</Label>
+						<Input
+							type='text'
+							name='username2'
+							value={props.username}
+							onChange={props.onChange}
+							id='name2'
+							placeholder='Display Name'
+							required
+						/>
+					</Controls>
+					<Controls>
+						<Label htmlFor='url'>Room ID</Label>
+						<Input
+							type='text'
+							name='url'
+							id='url'
+							placeholder='Youtube URL or Join ID'
+						/>
+					</Controls>
+				</CustomForm>
+			</Col>
+		</React.Fragment>
+	);
+};
 
 const Controls = styled.div`
 	display: flex;
