@@ -7,8 +7,9 @@ export const Card = (props) => (
 
 const StyledCard = styled.div`
 	padding: ${(props) => props.padding || 0};
-	border: 1px solid black;
-	box-shadow: 2px 2px 3px gray;
+	box-shadow: 2px 2px 3px #ddd;
 	width: ${(props) => props.width || 'auto'};
 	height: ${(props) => props.height || 'auto'};
+	background-color: #fff;
+	border-radius: 10px;
 `;

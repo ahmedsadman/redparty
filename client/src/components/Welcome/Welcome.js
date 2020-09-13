@@ -74,11 +74,9 @@ function Welcome(props) {
 
 			<Container fluid>
 				<Row align='center' style={styles.formContainer}>
-					<Col md={3}></Col>
-					<Col md={6}>
-						<StartForm />
-					</Col>
-					<Col md={3}></Col>
+					<Col md={2}></Col>
+					<StartForm />
+					<Col md={2}></Col>
 					<div className='dummy' ref={(el) => (formEnd = el)}></div>
 				</Row>
 			</Container>
