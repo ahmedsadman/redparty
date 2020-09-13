@@ -26,9 +26,13 @@ function Messages(props) {
 }
 
 const Message = (props) => {
-	return (
+	return props.user !== null ? (
 		<MessageContainer>
 			<User>{props.user}</User>
+			<Text>{props.children}</Text>
+		</MessageContainer>
+	) : (
+		<MessageContainer adminMessage>
 			<Text>{props.children}</Text>
 		</MessageContainer>
 	);
@@ -47,6 +51,9 @@ const MessageContainer = styled.div`
 	flex-direction: column;
 	font-size: 0.9em;
 	margin-bottom: 10px;
+
+	${({ adminMessage }) =>
+		adminMessage && { 'text-align': 'center', color: 'gray' }}
 `;
 
 const User = styled.div`

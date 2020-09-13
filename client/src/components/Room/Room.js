@@ -62,6 +62,17 @@ function Room(props) {
 		});
 	};
 
+	const dispatchAdminMessage = (id, text) => {
+		dispatch({
+			type: 'UPDATE_MESSAGES',
+			data: {
+				from: null,
+				text,
+				id,
+			},
+		});
+	};
+
 	const bindEvents = () => {
 		if (!_socket) return;
 
@@ -71,8 +82,12 @@ function Room(props) {
 					'success',
 					`${data.payload.name} has joined the room`
 				);
+				const { id, name } = data.payload;
+				dispatchAdminMessage(id, `${name} has joined`);
 			} else if (data.type === 'userLeft') {
 				showToast('info', `${data.payload.name} left the room`);
+				const { id, name } = data.payload;
+				dispatchAdminMessage(id, `${name} has left`);
 			} else if (data.type === 'userMessage') {
 				console.log('user message', data);
 				dispatch({ type: 'UPDATE_MESSAGES', data });
