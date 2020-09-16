@@ -92,12 +92,12 @@ function Room(props) {
 					'success',
 					`${data.payload.name} has joined the room`
 				);
-				const { id, name } = data.payload;
-				dispatchAdminMessage(id, `${name} has joined`);
+				const { name } = data.payload;
+				dispatchAdminMessage(data.id, `${name} has joined`);
 			} else if (data.type === 'userLeft') {
 				showToast('info', `${data.payload.name} left the room`);
-				const { id, name } = data.payload;
-				dispatchAdminMessage(id, `${name} has left`);
+				const { name } = data.payload;
+				dispatchAdminMessage(data.id, `${name} has left`);
 			} else if (data.type === 'userMessage') {
 				console.log('user message', data);
 				dispatch({ type: 'UPDATE_MESSAGES', data });
