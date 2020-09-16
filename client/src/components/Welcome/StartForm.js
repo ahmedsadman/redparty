@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Label, Input, Button, Card } from '../common';
-import { Container, Row, Col, Hidden } from 'react-grid-system';
-import { Visible } from 'react-grid-system';
-import { colors } from '../../config/colors';
+import { Col } from 'react-grid-system';
 
 function CustomForm(props) {
 	const { onSubmit, buttonLabel, header } = props;
@@ -33,11 +31,12 @@ function CustomForm(props) {
 
 const Forms = (props) => {
 	const [hostDisplayName, setHostDisplayName] = useState('');
+	const [videoUrl, setVideoUrl] = useState('');
 	const [joinDisplayName, setJoinDisplayName] = useState('');
 
 	const _onHost = (e) => {
 		e.preventDefault();
-		props.onHost(hostDisplayName);
+		props.onHost(hostDisplayName, videoUrl);
 	};
 
 	return (
@@ -56,7 +55,7 @@ const Forms = (props) => {
 							value={hostDisplayName}
 							onChange={(e) => setHostDisplayName(e.target.value)}
 							id='name1'
-							placeholder='Display Name'
+							placeholder='John The Host'
 							required
 						/>
 					</Controls>
@@ -66,7 +65,10 @@ const Forms = (props) => {
 							type='text'
 							name='url'
 							id='url'
-							placeholder='Youtube URL or Join ID'
+							value={videoUrl}
+							onChange={(e) => setVideoUrl(e.target.value)}
+							placeholder='https://www.youtube.com/watch?v=zFhfksjf_mY'
+							required
 						/>
 					</Controls>
 				</CustomForm>

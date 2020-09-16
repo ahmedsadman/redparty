@@ -1,5 +1,15 @@
 export const userReducer = (state, action) => {
 	switch (action.type) {
+		case 'UPDATE_USERNAME':
+			return {
+				...state,
+				username: action.username,
+			};
+		case 'UPDATE_VIDEO_ID':
+			return {
+				...state,
+				videoId: action.videoId,
+			};
 		case 'UPDATE_USER_LIST':
 			return {
 				...state,

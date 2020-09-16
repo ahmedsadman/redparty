@@ -7,7 +7,8 @@ export const UserContextProvider = (props) => {
 	const initialState = {
 		userList: [],
 		messages: [],
-		videoURL: '',
+		videoId: '',
+		username: '',
 	};
 	const [userData, dispatch] = useReducer(userReducer, initialState);
 

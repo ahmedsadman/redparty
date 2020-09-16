@@ -13,7 +13,6 @@ function Room(props) {
 	const { dispatch } = useContext(UserContext);
 
 	let _isHost = false;
-	let username = null;
 	let _socket = null;
 
 	useEffect(() => {
@@ -23,6 +22,8 @@ function Room(props) {
 
 	const init = async () => {
 		const hostId = props.location.state && props.location.state.hostId;
+		const videoId = props.location.state && props.location.state.videoId;
+		let username = null;
 
 		if (!hostId) {
 			// Not a host
@@ -36,6 +37,9 @@ function Room(props) {
 			const roomId = props.match.params.id;
 			_socket = await createConnection(username, roomId);
 			console.log('not host');
+
+			// update username in global context
+			dispatch({ type: 'UPDATE_USERNAME', username });
 		} else {
 			_isHost = true;
 			_socket = props.location.socket;
@@ -45,6 +49,7 @@ function Room(props) {
 		setHost(_isHost);
 		setSocket(_socket);
 		bindEvents();
+		console.log('video id: ', videoId);
 	};
 
 	const showToast = (icon, text) => {
