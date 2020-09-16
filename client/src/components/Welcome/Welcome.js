@@ -8,12 +8,10 @@ import FeatureBox from './FeatureBox';
 import { Button } from '../common';
 import { colors } from '../../config/colors';
 import { getVideoId } from '../../utils/helper';
-import { UserContext } from '../../contexts/UserContext';
 
 function Welcome(props) {
 	// const [canRedirectToRoom, setRedirect] = useState(false);
 	let formEnd = null;
-	const { dispatch } = useContext(UserContext);
 
 	const scrollToForm = () => {
 		if (formEnd) {
@@ -25,10 +23,6 @@ function Welcome(props) {
 		// use socket id as room address
 		const socket = await createConnection(username);
 		const videoId = getVideoId(videoUrl);
-
-		// update video url and username globally
-		dispatch({ type: 'UPDATE_USERNAME', username });
-		dispatch({ type: 'UPDATE_VIDEO_URL', videoId });
 
 		props.history.push({
 			pathname: `/room/${socket.id}`,

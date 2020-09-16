@@ -10,7 +10,7 @@ import { UserContext } from '../../contexts/UserContext';
 function Room(props) {
 	const [isHost, setHost] = useState(false);
 	const [socket, setSocket] = useState(null);
-	const { dispatch } = useContext(UserContext);
+	const { dispatch, userData } = useContext(UserContext);
 
 	let _isHost = false;
 	let _socket = null;
@@ -23,7 +23,7 @@ function Room(props) {
 	const init = async () => {
 		const hostId = props.location.state && props.location.state.hostId;
 		const videoId = props.location.state && props.location.state.videoId;
-		let username = null;
+		let username = props.location.state && props.location.state.username;
 
 		if (!hostId) {
 			// Not a host
@@ -38,13 +38,18 @@ function Room(props) {
 			_socket = await createConnection(username, roomId);
 			console.log('not host');
 
-			// update username in global context
-			dispatch({ type: 'UPDATE_USERNAME', username });
+			// doesn't have video id, need to be fetched from server
 		} else {
 			_isHost = true;
 			_socket = props.location.socket;
 			console.log('host');
+
+			// update videoid in global context
+			dispatch({ type: 'UPDATE_VIDEO_ID', videoId });
 		}
+
+		// update username in global context
+		dispatch({ type: 'UPDATE_USERNAME', username });
 
 		setHost(_isHost);
 		setSocket(_socket);
@@ -111,7 +116,7 @@ function Room(props) {
 			<Container fluid style={{ margin: '0 3%' }}>
 				<Row>
 					<Col md={8}>
-						<Player />
+						<Player videoId={userData.videoId} />
 					</Col>
 					<Col md={4}>
 						<Chat socket={socket} />
