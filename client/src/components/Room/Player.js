@@ -3,15 +3,56 @@ import styled from 'styled-components';
 import YouTube from 'react-youtube';
 
 function Player(props) {
-	const { videoId } = props;
+	const { videoId, socket } = props;
 	const options = {
 		width: '100%',
 		height: '500px',
 	};
 
+	const emitVideoState = (type, payload = {}) => {
+		if (socket) {
+			socket.emit('videoStateChange', { type, payload });
+		}
+	};
+
+	const onStateChange = (e) => {
+		const { data } = e;
+
+		/*
+		When user seeks a video, the following events are fired in order
+		Video paused (2) -> Video Ended (0) -> Video Playing (1)
+		*/
+		switch (data) {
+			case 1:
+				// PLAY
+				console.log('video started playing');
+				emitVideoState('PLAY', {
+					currentTime: e.target.getCurrentTime(),
+				});
+				break;
+
+			case 2:
+				// PAUSE
+				console.log('Video paused');
+				emitVideoState('PAUSE');
+				break;
+
+			default:
+				break;
+		}
+
+		console.log(e.target.getCurrentTime());
+	};
+
 	return (
 		<StyledPlayer>
-			{videoId ? <YouTube videoId={videoId} opts={options} /> : null}
+			{videoId ? (
+				<YouTube
+					videoId={videoId}
+					opts={options}
+					onStateChange={onStateChange}
+				/>
+			) : null}
 		</StyledPlayer>
 	);
 }

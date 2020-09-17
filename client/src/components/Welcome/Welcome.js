@@ -21,8 +21,8 @@ function Welcome(props) {
 
 	const onHost = async (username, videoUrl) => {
 		// use socket id as room address
-		const socket = await createConnection(username);
 		const videoId = getVideoId(videoUrl);
+		const socket = await createConnection(username, null, videoId);
 
 		props.history.push({
 			pathname: `/room/${socket.id}`,

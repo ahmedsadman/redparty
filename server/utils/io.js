@@ -10,10 +10,11 @@ exports.setupIO = (io) => {
 
 		socket.on('join', (data) => {
 			console.log('joining user', data);
-			const { roomId, name, userId } = data;
+			const { roomId, name, userId, videoId } = data;
 			console.log(`User ${name} just joined in room ${roomId}`);
+
 			socket.join(roomId);
-			Rooms.addRoom(roomId);
+			Rooms.addRoom(roomId, videoId);
 			Rooms.addUser(roomId, name, userId); // data.userId = socket.id
 			// Rooms.showInfo();
 
@@ -29,6 +30,17 @@ exports.setupIO = (io) => {
 
 			// tell everyone in the room to update their userlist
 			io.to(roomId).emit('updateUserList', Rooms.getUserList(roomId));
+
+			// if the user joined existing room, tell him about the playing video
+			if (!videoId) {
+				const room = Rooms.getRoom(roomId);
+				socket.emit(
+					'newMessage',
+					generateServerMessage('changeVideo', {
+						videoId: room.videoId,
+					})
+				);
+			}
 		});
 
 		socket.on('createMessage', (message) => {
@@ -41,6 +53,10 @@ exports.setupIO = (io) => {
 				);
 				console.log('new message received', message);
 			}
+		});
+
+		socket.on('videoStateChange', (data) => {
+			console.log('videoStateChange trigerred', data);
 		});
 
 		socket.on('disconnect', () => {

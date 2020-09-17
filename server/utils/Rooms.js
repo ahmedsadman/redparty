@@ -8,8 +8,12 @@ class Rooms {
 		this.userMap = {}; // maps socket id to rooms
 	}
 
-	addRoom(roomId) {
-		if (!this.rooms[roomId]) this.rooms[roomId] = { users: [] };
+	addRoom(roomId, videoId) {
+		if (!this.rooms[roomId]) this.rooms[roomId] = { users: [], videoId };
+	}
+
+	getRoom(roomId) {
+		return this.rooms[roomId];
 	}
 
 	addUser(roomId, name, userId) {

@@ -87,6 +87,7 @@ function Room(props) {
 		if (!_socket) return;
 
 		_socket.on('newMessage', (data) => {
+			// TODO: Use switch statement
 			if (data.type === 'userJoin') {
 				showToast(
 					'success',
@@ -101,6 +102,12 @@ function Room(props) {
 			} else if (data.type === 'userMessage') {
 				console.log('user message', data);
 				dispatch({ type: 'UPDATE_MESSAGES', data });
+			} else if (data.type === 'changeVideo') {
+				console.log('change video trigerred', data.payload);
+				dispatch({
+					type: 'UPDATE_VIDEO_ID',
+					videoId: data.payload.videoId,
+				});
 			}
 		});
 
@@ -116,7 +123,7 @@ function Room(props) {
 			<Container fluid style={{ margin: '0 3%' }}>
 				<Row>
 					<Col md={8}>
-						<Player videoId={userData.videoId} />
+						<Player socket={socket} videoId={userData.videoId} />
 					</Col>
 					<Col md={4}>
 						<Chat socket={socket} />
