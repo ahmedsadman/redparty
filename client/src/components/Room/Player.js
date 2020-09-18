@@ -26,21 +26,22 @@ function Player(props) {
 		}
 	};
 
-	// const onVideoPause = () => {
-	// 	if (player) {
-	// 		player.pauseVideo();
-	// 	}
-	// };
+	const onVideoPause = () => {
+		if (player.current) {
+			const _player = player.current.getInternalPlayer();
+			_player.pauseVideo();
+		}
+	};
 
 	useEffect(onVideoPlay, [signalData.playVideo]);
-	// useEffect(onVideoPause, [signalData.pauseVideo]);
+	useEffect(onVideoPause, [signalData.pauseVideo]);
 
 	const onStateChange = (e) => {
 		const { data } = e;
-
+		const _player = player.current && player.current.getInternalPlayer();
 		/*
 		When user seeks a video, the following events are fired in order
-		Video paused (2) -> Video Ended (0) -> Video Playing (1)
+		Video paused (2) -> Video Playing (1)
 		*/
 		switch (data) {
 			case 1:
@@ -49,12 +50,16 @@ function Player(props) {
 				emitVideoState('PLAY', {
 					currentTime: e.target.getCurrentTime(),
 				});
+				_player && _player.playVideo();
 				break;
 
 			case 2:
 				// PAUSE
 				console.log('Video paused');
-				emitVideoState('PAUSE');
+				emitVideoState('PAUSE', {
+					currentTime: e.target.getCurrentTime(),
+				});
+				_player && _player.pauseVideo();
 				break;
 
 			default:

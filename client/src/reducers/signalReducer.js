@@ -8,7 +8,7 @@ export const signalReducer = (state, action) => {
 		case 'PAUSE_VIDEO':
 			return {
 				...state,
-				pauseVideo: Date.now(),
+				pauseVideo: Math.round(action.currentTime),
 			};
 		default:
 			break;

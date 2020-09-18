@@ -126,7 +126,10 @@ function Room(props) {
 							break;
 
 						case 'PAUSE':
-							signalDispatch({ type: 'PAUSE_VIDEO' });
+							signalDispatch({
+								type: 'PAUSE_VIDEO',
+								currentTime: data.payload.currentTime,
+							});
 							break;
 
 						default:
