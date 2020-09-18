@@ -117,7 +117,6 @@ function Room(props) {
 					break;
 
 				case 'updateVideoState':
-					console.log('update video triggered', data);
 					switch (data.payload.type) {
 						case 'PLAY':
 							signalDispatch({

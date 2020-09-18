@@ -17,8 +17,8 @@ to trigger useEffect() hooks
 
 export const SignalContextProvider = (props) => {
 	const initialState = {
-		playVideo: 0, // hold video play time
-		pauseVideo: 0, // hold command timestamp
+		playVideo: null, // hold video play time
+		pauseVideo: null, // hold command timestamp
 	};
 
 	const [signalData, dispatch] = useReducer(signalReducer, initialState);

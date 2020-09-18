@@ -1,9 +1,10 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, createRef } from 'react';
 import styled from 'styled-components';
 import YouTube from 'react-youtube';
 import { SignalContext } from '../../contexts/SignalContext';
 
 function Player(props) {
+	let player = createRef();
 	const { videoId, socket } = props;
 	const options = {
 		width: '100%',
@@ -17,8 +18,22 @@ function Player(props) {
 		}
 	};
 
-	useEffect(() => console.log('video play'), [signalData.playVideo]);
-	useEffect(() => console.log('video pause'), [signalData.pauseVideo]);
+	const onVideoPlay = () => {
+		if (player.current) {
+			const _player = player.current.getInternalPlayer();
+			_player.seekTo(signalData.playVideo || 0);
+			_player.playVideo();
+		}
+	};
+
+	// const onVideoPause = () => {
+	// 	if (player) {
+	// 		player.pauseVideo();
+	// 	}
+	// };
+
+	useEffect(onVideoPlay, [signalData.playVideo]);
+	// useEffect(onVideoPause, [signalData.pauseVideo]);
 
 	const onStateChange = (e) => {
 		const { data } = e;
@@ -54,6 +69,7 @@ function Player(props) {
 					videoId={videoId}
 					opts={options}
 					onStateChange={onStateChange}
+					ref={player}
 				/>
 			) : null}
 		</StyledPlayer>
