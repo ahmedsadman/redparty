@@ -87,19 +87,19 @@ function Room(props) {
 		if (!_socket) return;
 
 		_socket.on('newMessage', (data) => {
+			const { name } = data.payload;
+
 			switch (data.type) {
 				case 'userJoin':
 					showToast(
 						'success',
 						`${data.payload.name} has joined the room`
 					);
-					const { name } = data.payload;
 					dispatchAdminMessage(data.id, `${name} has joined`);
 					break;
 
 				case 'userLeft':
 					showToast('info', `${data.payload.name} has left the room`);
-					const { name } = data.payload;
 					dispatchAdminMessage(data.id, `${name} has left`);
 					break;
 
@@ -113,6 +113,9 @@ function Room(props) {
 						videoId: data.payload.videoId,
 					});
 					break;
+
+				case 'updateVideoState':
+					console.log('update video triggered', data);
 
 				default:
 					break;

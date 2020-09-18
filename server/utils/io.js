@@ -56,7 +56,16 @@ exports.setupIO = (io) => {
 		});
 
 		socket.on('videoStateChange', (data) => {
+			const user = Rooms.getUser(socket.id);
 			console.log('videoStateChange trigerred', data);
+			// tell others to update the videoState
+			socket.broadcast.to(user.roomId).emit(
+				'newMessage',
+				generateServerMessage('updateVideoState', {
+					type: data.type,
+					...data.payload,
+				})
+			);
 		});
 
 		socket.on('disconnect', () => {
