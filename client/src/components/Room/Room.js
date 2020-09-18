@@ -6,11 +6,13 @@ import Player from './Player';
 import Chat from './Chat/Chat';
 import { createConnection } from '../../utils/socket';
 import { UserContext } from '../../contexts/UserContext';
+import { SignalContext } from '../../contexts/SignalContext';
 
 function Room(props) {
 	const [isHost, setHost] = useState(false);
 	const [socket, setSocket] = useState(null);
-	const { dispatch, userData } = useContext(UserContext);
+	const { dispatch: userDispatch, userData } = useContext(UserContext);
+	const { dispatch: signalDispatch } = useContext(SignalContext);
 
 	let _isHost = false;
 	let _socket = null;
@@ -45,11 +47,11 @@ function Room(props) {
 			console.log('host');
 
 			// update videoid in global context
-			dispatch({ type: 'UPDATE_VIDEO_ID', videoId });
+			userDispatch({ type: 'UPDATE_VIDEO_ID', videoId });
 		}
 
 		// update username in global context
-		dispatch({ type: 'UPDATE_USERNAME', username });
+		userDispatch({ type: 'UPDATE_USERNAME', username });
 
 		setHost(_isHost);
 		setSocket(_socket);
@@ -73,7 +75,7 @@ function Room(props) {
 	};
 
 	const dispatchAdminMessage = (id, text) => {
-		dispatch({
+		userDispatch({
 			type: 'UPDATE_MESSAGES',
 			data: {
 				from: null,
@@ -104,11 +106,11 @@ function Room(props) {
 					break;
 
 				case 'userMessage':
-					dispatch({ type: 'UPDATE_MESSAGES', data });
+					userDispatch({ type: 'UPDATE_MESSAGES', data });
 					break;
 
 				case 'changeVideo':
-					dispatch({
+					userDispatch({
 						type: 'UPDATE_VIDEO_ID',
 						videoId: data.payload.videoId,
 					});
@@ -116,6 +118,21 @@ function Room(props) {
 
 				case 'updateVideoState':
 					console.log('update video triggered', data);
+					switch (data.payload.type) {
+						case 'PLAY':
+							signalDispatch({
+								type: 'PLAY_VIDEO',
+								currentTime: data.payload.currentTime,
+							});
+							break;
+
+						case 'PAUSE':
+							signalDispatch({ type: 'PAUSE_VIDEO' });
+							break;
+
+						default:
+							break;
+					}
 
 				default:
 					break;
@@ -124,7 +141,7 @@ function Room(props) {
 
 		_socket.on('updateUserList', (userList) => {
 			console.log('new user list', userList);
-			dispatch({ type: 'UPDATE_USER_LIST', users: userList });
+			userDispatch({ type: 'UPDATE_USER_LIST', users: userList });
 		});
 	};
 

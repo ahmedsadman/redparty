@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import YouTube from 'react-youtube';
+import { SignalContext } from '../../contexts/SignalContext';
 
 function Player(props) {
 	const { videoId, socket } = props;
@@ -8,12 +9,16 @@ function Player(props) {
 		width: '100%',
 		height: '500px',
 	};
+	const { dispatch: signalDispatch, signalData } = useContext(SignalContext);
 
 	const emitVideoState = (type, payload = {}) => {
 		if (socket) {
 			socket.emit('videoStateChange', { type, payload });
 		}
 	};
+
+	useEffect(() => console.log('video play'), [signalData.playVideo]);
+	useEffect(() => console.log('video pause'), [signalData.pauseVideo]);
 
 	const onStateChange = (e) => {
 		const { data } = e;
@@ -40,8 +45,6 @@ function Player(props) {
 			default:
 				break;
 		}
-
-		console.log(e.target.getCurrentTime());
 	};
 
 	return (

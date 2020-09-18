@@ -1,11 +1,14 @@
 import React from 'react';
 import { UserContextProvider } from './contexts/UserContext';
+import { SignalContextProvider } from './contexts/SignalContext';
 import Routes from './Routes';
 
 function App() {
 	return (
 		<UserContextProvider>
-			<Routes />
+			<SignalContextProvider>
+				<Routes />
+			</SignalContextProvider>
 		</UserContextProvider>
 	);
 }
