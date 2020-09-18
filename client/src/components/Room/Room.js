@@ -87,27 +87,35 @@ function Room(props) {
 		if (!_socket) return;
 
 		_socket.on('newMessage', (data) => {
-			// TODO: Use switch statement
-			if (data.type === 'userJoin') {
-				showToast(
-					'success',
-					`${data.payload.name} has joined the room`
-				);
-				const { name } = data.payload;
-				dispatchAdminMessage(data.id, `${name} has joined`);
-			} else if (data.type === 'userLeft') {
-				showToast('info', `${data.payload.name} left the room`);
-				const { name } = data.payload;
-				dispatchAdminMessage(data.id, `${name} has left`);
-			} else if (data.type === 'userMessage') {
-				console.log('user message', data);
-				dispatch({ type: 'UPDATE_MESSAGES', data });
-			} else if (data.type === 'changeVideo') {
-				console.log('change video trigerred', data.payload);
-				dispatch({
-					type: 'UPDATE_VIDEO_ID',
-					videoId: data.payload.videoId,
-				});
+			switch (data.type) {
+				case 'userJoin':
+					showToast(
+						'success',
+						`${data.payload.name} has joined the room`
+					);
+					const { name } = data.payload;
+					dispatchAdminMessage(data.id, `${name} has joined`);
+					break;
+
+				case 'userLeft':
+					showToast('info', `${data.payload.name} has left the room`);
+					const { name } = data.payload;
+					dispatchAdminMessage(data.id, `${name} has left`);
+					break;
+
+				case 'userMessage':
+					dispatch({ type: 'UPDATE_MESSAGES', data });
+					break;
+
+				case 'changeVideo':
+					dispatch({
+						type: 'UPDATE_VIDEO_ID',
+						videoId: data.payload.videoId,
+					});
+					break;
+
+				default:
+					break;
 			}
 		});
 
