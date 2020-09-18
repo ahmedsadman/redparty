@@ -87,7 +87,7 @@ function Room(props) {
 		if (!_socket) return;
 
 		_socket.on('newMessage', (data) => {
-			const { name } = data.payload;
+			const name = data.payload && data.payload.name;
 
 			switch (data.type) {
 				case 'userJoin':
