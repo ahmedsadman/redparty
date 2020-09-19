@@ -48,6 +48,7 @@ function Room(props) {
 
 			// update videoid in global context
 			userDispatch({ type: 'UPDATE_VIDEO_ID', videoId });
+			showInviteModal();
 		}
 
 		// update username in global context
@@ -76,6 +77,23 @@ function Room(props) {
 		Toast.fire({
 			icon,
 			title: text,
+		});
+	};
+
+	const showInviteModal = async () => {
+		await Swal.fire({
+			title: 'Invite friends with this link',
+			input: 'text',
+			inputValue: window.location.href,
+			confirmButtonText: 'Copy',
+			inputAttributes: {
+				readOnly: true,
+			},
+			width: '40%',
+			onClose: () => {
+				document.getElementsByClassName('swal2-input')[0].select();
+				document.execCommand('copy');
+			},
 		});
 	};
 
