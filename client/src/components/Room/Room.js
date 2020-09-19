@@ -128,7 +128,7 @@ function Room(props) {
 						case 'PAUSE':
 							signalDispatch({
 								type: 'PAUSE_VIDEO',
-								currentTime: data.payload.currentTime,
+								timestamp: Date.now(),
 							});
 							break;
 
