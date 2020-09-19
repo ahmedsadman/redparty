@@ -60,9 +60,7 @@ function Player(props) {
 				// PAUSE
 				console.log('Video paused');
 				if (!signalData.transition) {
-					emitVideoState('PAUSE', {
-						currentTime: e.target.getCurrentTime(),
-					});
+					emitVideoState('PAUSE');
 				}
 				_player && _player.pauseVideo();
 				break;
