@@ -64,6 +64,10 @@ exports.setupIO = (io) => {
 				generateServerMessage('updateVideoState', {
 					type: data.type,
 					...data.payload,
+					user: {
+						name: user.name,
+						id: socket.id,
+					},
 				})
 			);
 		});

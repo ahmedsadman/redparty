@@ -59,13 +59,18 @@ function Room(props) {
 		console.log('video id: ', videoId);
 	};
 
-	const showToast = (icon, text) => {
+	const showToast = (icon, text, position = 'top', timer = 3000) => {
 		const Toast = Swal.mixin({
 			toast: true,
-			position: 'top',
+			position,
 			showConfirmButton: false,
-			timer: 4000,
+			timer,
 			timerProgressBar: true,
+			customClass: {
+				container: {
+					fontSize: '0.5em',
+				},
+			},
 		});
 
 		Toast.fire({
@@ -127,6 +132,11 @@ function Room(props) {
 								type: 'PLAY_VIDEO',
 								currentTime: data.payload.currentTime,
 							});
+							showToast(
+								'info',
+								`${data.payload.user.name} has started playing the video`,
+								'bottom-start'
+							);
 							break;
 
 						case 'PAUSE':
@@ -134,6 +144,11 @@ function Room(props) {
 								type: 'PAUSE_VIDEO',
 								timestamp: Date.now(),
 							});
+							showToast(
+								'info',
+								`${data.payload.user.name} has paused the video`,
+								'bottom-start'
+							);
 							break;
 
 						default:
