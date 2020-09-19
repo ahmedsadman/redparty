@@ -1,5 +1,10 @@
 export const signalReducer = (state, action) => {
 	switch (action.type) {
+		case 'SET_TRANSITION':
+			return {
+				...state,
+				transition: action.transition,
+			};
 		case 'PLAY_VIDEO':
 			return {
 				...state,

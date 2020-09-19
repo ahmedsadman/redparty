@@ -47,18 +47,23 @@ function Player(props) {
 			case 1:
 				// PLAY
 				console.log('video started playing');
-				emitVideoState('PLAY', {
-					currentTime: e.target.getCurrentTime(),
-				});
+				if (!signalData.transition) {
+					emitVideoState('PLAY', {
+						currentTime: e.target.getCurrentTime(),
+					});
+				}
 				_player && _player.playVideo();
+				signalDispatch({ type: 'SET_TRANSITION', transition: false });
 				break;
 
 			case 2:
 				// PAUSE
 				console.log('Video paused');
-				emitVideoState('PAUSE', {
-					currentTime: e.target.getCurrentTime(),
-				});
+				if (!signalData.transition) {
+					emitVideoState('PAUSE', {
+						currentTime: e.target.getCurrentTime(),
+					});
+				}
 				_player && _player.pauseVideo();
 				break;
 

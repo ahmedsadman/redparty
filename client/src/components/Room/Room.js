@@ -117,6 +117,10 @@ function Room(props) {
 					break;
 
 				case 'updateVideoState':
+					signalDispatch({
+						type: 'SET_TRANSITION',
+						transition: true,
+					});
 					switch (data.payload.type) {
 						case 'PLAY':
 							signalDispatch({
