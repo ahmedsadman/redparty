@@ -12,9 +12,12 @@ function Player(props) {
 	};
 	const { dispatch: signalDispatch, signalData } = useContext(SignalContext);
 
-	const emitVideoState = (type, payload = {}) => {
+	const emitVideoState = (type, payload = {}, delayOffset = 0) => {
 		if (socket) {
-			socket.emit('videoStateChange', { type, payload });
+			setTimeout(
+				() => socket.emit('videoStateChange', { type, payload }),
+				500 + delayOffset
+			);
 		}
 	};
 
@@ -48,9 +51,13 @@ function Player(props) {
 				// PLAY
 				console.log('video started playing');
 				if (!signalData.transition) {
-					emitVideoState('PLAY', {
-						currentTime: e.target.getCurrentTime(),
-					});
+					emitVideoState(
+						'PLAY',
+						{
+							currentTime: e.target.getCurrentTime(),
+						},
+						150
+					);
 				}
 				_player && _player.playVideo();
 				signalDispatch({ type: 'SET_TRANSITION', transition: false });
