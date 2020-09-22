@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import Swal from 'sweetalert2';
 import { Container, Row, Col, Hidden } from 'react-grid-system';
+import Swal from 'sweetalert2';
 import Topbar from '../common/Topbar';
 import Player from './Player';
 import Chat from './Chat/Chat';
-import { createConnection } from '../../utils/socket';
+import { createConnection, bindSocketEvents } from '../../utils/socket';
 import { UserContext } from '../../contexts/UserContext';
 import { SignalContext } from '../../contexts/SignalContext';
 
@@ -38,13 +38,11 @@ function Room(props) {
 			username = usernamePrompt.value;
 			const roomId = props.match.params.id;
 			_socket = await createConnection(username, roomId);
-			console.log('not host');
 
 			// doesn't have video id, need to be fetched from server
 		} else {
 			_isHost = true;
 			_socket = props.location.socket;
-			console.log('host');
 
 			// update videoid in global context
 			userDispatch({ type: 'UPDATE_VIDEO_ID', videoId });
@@ -56,27 +54,9 @@ function Room(props) {
 
 		setHost(_isHost);
 		setSocket(_socket);
-		bindEvents();
-		console.log('video id: ', videoId);
-	};
-
-	const showToast = (icon, text, position = 'top', timer = 3000) => {
-		const Toast = Swal.mixin({
-			toast: true,
-			position,
-			showConfirmButton: false,
-			timer,
-			timerProgressBar: true,
-			customClass: {
-				container: {
-					fontSize: '0.5em',
-				},
-			},
-		});
-
-		Toast.fire({
-			icon,
-			title: text,
+		bindSocketEvents(_socket, {
+			userDispatch,
+			signalDispatch,
 		});
 	};
 
@@ -94,93 +74,6 @@ function Room(props) {
 				document.getElementsByClassName('swal2-input')[0].select();
 				document.execCommand('copy');
 			},
-		});
-	};
-
-	const dispatchAdminMessage = (id, text) => {
-		userDispatch({
-			type: 'UPDATE_MESSAGES',
-			data: {
-				from: null,
-				text,
-				id,
-			},
-		});
-	};
-
-	const bindEvents = () => {
-		if (!_socket) return;
-
-		_socket.on('newMessage', (data) => {
-			const name = data.payload && data.payload.name;
-
-			switch (data.type) {
-				case 'userJoin':
-					showToast(
-						'success',
-						`${data.payload.name} has joined the room`
-					);
-					dispatchAdminMessage(data.id, `${name} has joined`);
-					break;
-
-				case 'userLeft':
-					showToast('info', `${data.payload.name} has left the room`);
-					dispatchAdminMessage(data.id, `${name} has left`);
-					break;
-
-				case 'userMessage':
-					userDispatch({ type: 'UPDATE_MESSAGES', data });
-					break;
-
-				case 'changeVideo':
-					userDispatch({
-						type: 'UPDATE_VIDEO_ID',
-						videoId: data.payload.videoId,
-					});
-					break;
-
-				case 'updateVideoState':
-					signalDispatch({
-						type: 'SET_TRANSITION',
-						transition: true,
-					});
-					switch (data.payload.type) {
-						case 'PLAY':
-							signalDispatch({
-								type: 'PLAY_VIDEO',
-								currentTime: data.payload.currentTime,
-							});
-							showToast(
-								'info',
-								`${data.payload.user.name} has started playing the video`,
-								'bottom-start'
-							);
-							break;
-
-						case 'PAUSE':
-							signalDispatch({
-								type: 'PAUSE_VIDEO',
-								timestamp: Date.now(),
-							});
-							showToast(
-								'info',
-								`${data.payload.user.name} has paused the video`,
-								'bottom-start'
-							);
-							break;
-
-						default:
-							break;
-					}
-
-				default:
-					break;
-			}
-		});
-
-		_socket.on('updateUserList', (userList) => {
-			console.log('new user list', userList);
-			userDispatch({ type: 'UPDATE_USER_LIST', users: userList });
 		});
 	};
 
