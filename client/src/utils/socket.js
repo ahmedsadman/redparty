@@ -54,10 +54,26 @@ export const bindSocketEvents = (socket, dispatchFunc) => {
 				break;
 
 			case 'changeVideo':
+				// initiated when user is joining the room first time
+				// tells him about the currently playing video
 				userDispatch({
 					type: 'UPDATE_VIDEO_ID',
 					videoId: data.payload.videoId,
 				});
+				break;
+
+			case 'updateVideoId':
+				// initiated when video is changed in the middle of playing
+				// everyone is informed of the newly selected video
+				userDispatch({
+					type: 'UPDATE_VIDEO_ID',
+					videoId: data.payload.videoId,
+				});
+				showToast(
+					'info',
+					`${data.payload.user.name} has changed the video`,
+					'bottom-start'
+				);
 				break;
 
 			case 'updateVideoState':

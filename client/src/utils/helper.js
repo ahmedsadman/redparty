@@ -13,11 +13,6 @@ export const showToast = (icon, text, position = 'top', timer = 3000) => {
 		showConfirmButton: false,
 		timer,
 		timerProgressBar: true,
-		customClass: {
-			container: {
-				fontSize: '0.5em',
-			},
-		},
 	});
 
 	Toast.fire({

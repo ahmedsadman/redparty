@@ -72,6 +72,15 @@ exports.setupIO = (io) => {
 			);
 		});
 
+		socket.on('changeVideo', (data) => {
+			const { videoId } = data;
+			const user = Rooms.getUser(socket.id);
+			io.to(user.roomId).emit(
+				'newMessage',
+				generateServerMessage('updateVideoId', { videoId, user })
+			);
+		});
+
 		socket.on('disconnect', () => {
 			console.log('User disconnected');
 			const user = Rooms.removeUser(socket.id);

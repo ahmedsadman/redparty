@@ -6,6 +6,7 @@ import Player from './Player';
 import Chat from './Chat/Chat';
 import Options from './Options';
 import { createConnection, bindSocketEvents } from '../../utils/socket';
+import { getVideoId } from '../../utils/helper';
 import { UserContext } from '../../contexts/UserContext';
 import { SignalContext } from '../../contexts/SignalContext';
 
@@ -44,6 +45,7 @@ function Room(props) {
 		} else {
 			_isHost = true;
 			_socket = props.location.socket;
+			console.log('host socket', _socket);
 
 			// update videoid in global context
 			userDispatch({ type: 'UPDATE_VIDEO_ID', videoId });
@@ -78,6 +80,26 @@ function Room(props) {
 		});
 	};
 
+	const askVideoURL = async () => {
+		const { value: url } = await Swal.fire({
+			title: 'YouTube Video URL',
+			input: 'url',
+			inputPlaceholder: 'https://www.youtube.com/watch?v=BTYAsjAVa3I',
+		});
+
+		return url;
+	};
+
+	const onVideoChange = async () => {
+		const newURL = await askVideoURL();
+
+		if (newURL && socket) {
+			console.log(_socket);
+			const videoId = getVideoId(newURL);
+			socket.emit('changeVideo', { videoId });
+		}
+	};
+
 	const alertNotImplemented = () => {
 		alert('Not implemented');
 	};
@@ -94,6 +116,7 @@ function Room(props) {
 						<Options
 							onInvite={showInviteModal}
 							alertNotImplemented={alertNotImplemented}
+							onVideoChange={onVideoChange}
 						/>
 						<Chat socket={socket} />
 					</Col>

@@ -8,7 +8,7 @@ const Options = (props) => {
 			<OptionButton
 				icon='videocam'
 				title='Change to another YouTube video'
-				onClick={props.alertNotImplemented}
+				onClick={props.onVideoChange}
 			>
 				Change Video
 			</OptionButton>
@@ -17,7 +17,7 @@ const Options = (props) => {
 				title='Invite friends to join this room'
 				onClick={props.onInvite}
 			>
-				Invite
+				Invite Friends
 			</OptionButton>
 			<OptionButton
 				icon='person-circle'
