@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import Topbar from '../common/Topbar';
 import Player from './Player';
 import Chat from './Chat/Chat';
+import Options from './Options';
 import { createConnection, bindSocketEvents } from '../../utils/socket';
 import { UserContext } from '../../contexts/UserContext';
 import { SignalContext } from '../../contexts/SignalContext';
@@ -77,6 +78,10 @@ function Room(props) {
 		});
 	};
 
+	const alertNotImplemented = () => {
+		alert('Not implemented');
+	};
+
 	return (
 		<React.Fragment>
 			<Topbar />
@@ -86,6 +91,10 @@ function Room(props) {
 						<Player socket={socket} videoId={userData.videoId} />
 					</Col>
 					<Col md={4}>
+						<Options
+							onInvite={showInviteModal}
+							alertNotImplemented={alertNotImplemented}
+						/>
 						<Chat socket={socket} />
 					</Col>
 				</Row>

@@ -47,8 +47,8 @@ const StyledChat = styled.div`
 	background-color: #fff;
 	display: flex;
 	flex-direction: column;
-	height: 500px;
-	margin-top: 30px;
+	height: 465px;
+	margin-top: 5px;
 	border-radius: 5px;
 	border: 1px solid #ddd;
 	box-shadow: 3px 3px 5px #eee;
