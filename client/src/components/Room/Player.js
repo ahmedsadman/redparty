@@ -70,6 +70,7 @@ function Player(props) {
 					emitVideoState('PAUSE');
 				}
 				_player && _player.pauseVideo();
+				signalDispatch({ type: 'SET_TRANSITION', transition: false });
 				break;
 
 			default:
