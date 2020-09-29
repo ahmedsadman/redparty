@@ -24,6 +24,7 @@ export const SignalContextProvider = (props) => {
 		// be emitted to the server. This prevents unintentional back and forth
 		// event passing and provides consistency in video seek/pause.
 		transition: false,
+		videoChanging: false,
 	};
 
 	const [signalData, dispatch] = useReducer(signalReducer, initialState);

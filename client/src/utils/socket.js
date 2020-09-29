@@ -66,6 +66,7 @@ export const bindSocketEvents = (socket, dispatchFunc) => {
 				// initiated when video is changed in the middle of playing
 				// everyone is informed of the newly selected video
 				signalDispatch({ type: 'RESET_SIGNAL_STATE' });
+				signalDispatch({ type: 'VIDEO_CHANGING', videoChanging: true });
 				userDispatch({
 					type: 'UPDATE_VIDEO_ID',
 					videoId: data.payload.videoId,
