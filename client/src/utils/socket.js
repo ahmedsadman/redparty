@@ -65,10 +65,7 @@ export const bindSocketEvents = (socket, dispatchFunc) => {
 			case 'updateVideoId':
 				// initiated when video is changed in the middle of playing
 				// everyone is informed of the newly selected video
-				signalDispatch({
-					type: 'SET_TRANSITION',
-					transition: true,
-				});
+				signalDispatch({ type: 'RESET_SIGNAL_STATE' });
 				userDispatch({
 					type: 'UPDATE_VIDEO_ID',
 					videoId: data.payload.videoId,
@@ -89,7 +86,10 @@ export const bindSocketEvents = (socket, dispatchFunc) => {
 					type: 'SET_TRANSITION',
 					transition: true,
 				});
-				console.log('===== update video state triggered =====');
+				console.log(
+					'update video state triggered =',
+					data.payload.type
+				);
 				switch (data.payload.type) {
 					case 'PLAY':
 						signalDispatch({

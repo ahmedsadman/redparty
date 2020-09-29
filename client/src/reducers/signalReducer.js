@@ -15,6 +15,12 @@ export const signalReducer = (state, action) => {
 				...state,
 				pauseVideo: action.timestamp,
 			};
+		case 'RESET_SIGNAL_STATE':
+			return {
+				...state,
+				playVideo: null,
+				pauseVideo: null,
+			};
 		default:
 			break;
 	}

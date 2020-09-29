@@ -13,11 +13,9 @@ function Player(props) {
 	const { dispatch: signalDispatch, signalData } = useContext(SignalContext);
 
 	const emitVideoState = (type, payload = {}, delayOffset = 0) => {
-		if (socket) {
-			setTimeout(
-				() => socket.emit('videoStateChange', { type, payload }),
-				500 + delayOffset
-			);
+		if (socket && !signalData.transition) {
+			console.log('Emitting video state', type);
+			socket.emit('videoStateChange', { type, payload });
 		}
 	};
 
@@ -33,11 +31,21 @@ function Player(props) {
 		if (player.current) {
 			const _player = player.current.getInternalPlayer();
 			_player.pauseVideo();
+			signalDispatch({ type: 'SET_TRANSITION', transition: false });
 		}
 	};
 
 	useEffect(onVideoPlay, [signalData.playVideo]);
 	useEffect(onVideoPause, [signalData.pauseVideo]);
+
+	useEffect(() => {
+		if (!player.current) return;
+		const _player = player.current.getInternalPlayer();
+		_player.seekTo(0);
+		_player.stopVideo();
+		console.log('video change trigerred xcv xcv xc v');
+		signalDispatch({ type: 'SET_TRANSITION', transition: false });
+	}, [videoId]);
 
 	const onStateChange = (e) => {
 		const { data } = e;
@@ -47,29 +55,40 @@ function Player(props) {
 		Video paused (2) -> Video Playing (1)
 		*/
 		switch (data) {
+			case -1:
+				console.log('Case -1 Video unstarted');
+				break;
+
+			case 0:
+				console.log('Case 0 Video Ended');
+
 			case 1:
 				// PLAY
-				console.log('video started playing');
-				if (!signalData.transition) {
-					emitVideoState(
-						'PLAY',
-						{
-							currentTime: e.target.getCurrentTime(),
-						},
-						150
-					);
-				}
-				_player && _player.playVideo();
+				console.log('Case 1 Video Play');
 				signalDispatch({ type: 'SET_TRANSITION', transition: false });
+				_player && _player.playVideo();
+
+				emitVideoState(
+					'PLAY',
+					{
+						currentTime: e.target.getCurrentTime(),
+					},
+					150
+				);
 				break;
 
 			case 2:
 				// PAUSE
-				console.log('Video paused');
-				if (!signalData.transition) {
-					emitVideoState('PAUSE');
-				}
-				_player && _player.pauseVideo();
+				console.log('Case 2 Video paused');
+				emitVideoState('PAUSE');
+				break;
+
+			case 3:
+				console.log('Case 3 Bufferring');
+				break;
+
+			case 5:
+				console.log('Case 5 Video Cued');
 				signalDispatch({ type: 'SET_TRANSITION', transition: false });
 				break;
 
