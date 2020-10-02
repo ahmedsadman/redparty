@@ -4,7 +4,7 @@ import { Label, Input, Button, Card } from '../common';
 import { Col } from 'react-grid-system';
 
 function CustomForm(props) {
-	const { onSubmit, buttonLabel, header } = props;
+	const { onSubmit, buttonLabel, header, loading } = props;
 	return (
 		<form onSubmit={onSubmit}>
 			<Card padding='20px'>
@@ -20,6 +20,8 @@ function CustomForm(props) {
 						type='submit'
 						style={{ alignSelf: 'center', marginTop: '30px' }}
 						secondary
+						isLoading={loading}
+						disabled={loading}
 					>
 						{buttonLabel}
 					</Button>
@@ -46,6 +48,7 @@ const Forms = (props) => {
 					buttonLabel='Host'
 					header='Start a party!'
 					onSubmit={_onHost}
+					loading={props.hostLoading}
 				>
 					<Controls>
 						<Label htmlFor='username1'>Display Name</Label>
@@ -77,7 +80,11 @@ const Forms = (props) => {
 				<BigHeader>...Or...</BigHeader>
 			</Col>
 			<Col md={3}>
-				<CustomForm buttonLabel='Join' header='Join existing one!'>
+				<CustomForm
+					buttonLabel='Join'
+					header='Join existing one!'
+					loading={props.loading}
+				>
 					<Controls>
 						<Label htmlFor='username2'>Display Name</Label>
 						<Input
@@ -86,17 +93,17 @@ const Forms = (props) => {
 							value={props.username}
 							onChange={props.onChange}
 							id='name2'
-							placeholder='Display Name'
+							placeholder='Dursley'
 							required
 						/>
 					</Controls>
 					<Controls>
-						<Label htmlFor='url'>Room ID</Label>
+						<Label htmlFor='url'>Join URL</Label>
 						<Input
 							type='text'
 							name='url'
 							id='url'
-							placeholder='Youtube URL or Join ID'
+							placeholder='redparty.netlify.app/room/asD2123f'
 						/>
 					</Controls>
 				</CustomForm>

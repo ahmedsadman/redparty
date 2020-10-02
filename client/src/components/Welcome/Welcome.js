@@ -12,6 +12,7 @@ import { getVideoId } from '../../utils/helper';
 function Welcome(props) {
 	// const [canRedirectToRoom, setRedirect] = useState(false);
 	let formEnd = null;
+	const [hostLoading, setHostLoading] = useState(false);
 
 	const scrollToForm = () => {
 		if (formEnd) {
@@ -21,8 +22,10 @@ function Welcome(props) {
 
 	const onHost = async (username, videoUrl) => {
 		// use socket id as room address
+		setHostLoading(true);
 		const videoId = getVideoId(videoUrl);
 		const socket = await createConnection(username, null, videoId);
+		setHostLoading(false);
 
 		props.history.push({
 			pathname: `/room/${socket.id}`,
@@ -73,7 +76,7 @@ function Welcome(props) {
 			<Container fluid>
 				<Row align='center' style={styles.formContainer}>
 					<Col md={2}></Col>
-					<StartForm onHost={onHost} />
+					<StartForm onHost={onHost} hostLoading={hostLoading} />
 					<Col md={2}></Col>
 					<div className='dummy' ref={(el) => (formEnd = el)}></div>
 				</Row>

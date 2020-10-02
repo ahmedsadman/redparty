@@ -1,17 +1,41 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { colors } from '../../config/colors';
 
-export const Button = ({ children, ...props }) => (
-	<StyledButton {...props}>{children}</StyledButton>
+export const Button = ({ children, isLoading, ...props }) => (
+	<StyledButton {...props} isLoading={isLoading}>
+		{isLoading ? (
+			<Loading>
+				<ion-icon
+					name='refresh-circle-outline'
+					style={{ fontSize: '1.1em' }}
+				></ion-icon>
+			</Loading>
+		) : null}
+		{children}
+	</StyledButton>
 );
+
+const spin = keyframes`
+	0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}`;
+
+const Loading = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: ${spin} 2s linear infinite;
+`;
 
 const StyledButton = styled.button`
 	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	padding: 6px;
 	min-width: 90px;
 	outline: none;
-	text-align: center;
 	font-family: inherit;
 	text-shadow: ${(props) => (props.secondary ? '1px 1px 2px #eee' : 'none')};
 	color: white;
@@ -28,6 +52,8 @@ const StyledButton = styled.button`
 	transition: all 0.3s;
 
 	&:hover {
-		opacity: 0.9;
+		opacity: 0.8;
 	}
+
+	${(props) => props.loading && 'opacity: 0.8'}
 `;
