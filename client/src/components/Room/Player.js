@@ -12,6 +12,11 @@ function Player(props) {
 	};
 	const { dispatch: signalDispatch, signalData } = useContext(SignalContext);
 
+	const getCurrentPlayer = () => {
+		if (player.current) return player.current.getInternalPlayer();
+		else return null;
+	};
+
 	const emitVideoState = (type, payload = {}, delayOffset = 0) => {
 		setTimeout(() => {
 			if (socket && !signalData.transition) {
@@ -22,46 +27,44 @@ function Player(props) {
 	};
 
 	const onVideoPlay = () => {
-		if (player.current) {
-			const _player = player.current.getInternalPlayer();
-			_player.seekTo(signalData.playVideo || 0);
-			_player.playVideo();
-		}
+		const player = getCurrentPlayer();
+		if (!player) return;
+		player.seekTo(signalData.playVideo || 0);
+		player.playVideo();
 	};
 
 	const onVideoPause = () => {
-		if (player.current) {
-			const _player = player.current.getInternalPlayer();
-			_player.pauseVideo();
-			if (signalData.videoChanging) {
-				signalDispatch({ type: 'SET_TRANSITION', transition: false });
-				signalDispatch({
-					type: 'VIDEO_CHANGING',
-					videoChanging: false,
-				});
-			}
+		const player = getCurrentPlayer();
+		if (!player) return;
+
+		player.pauseVideo();
+		if (signalData.videoChanging) {
+			signalDispatch({ type: 'SET_TRANSITION', transition: false });
+			signalDispatch({
+				type: 'VIDEO_CHANGING',
+				videoChanging: false,
+			});
 		}
+	};
+
+	const loadNewVideo = () => {
+		const player = getCurrentPlayer();
+		if (!player) return;
+
+		player.seekTo(0);
+		player.stopVideo();
+		signalDispatch({ type: 'SET_TRANSITION', transition: false });
 	};
 
 	useEffect(onVideoPlay, [signalData.playVideo]);
 	useEffect(onVideoPause, [signalData.pauseVideo]);
-
-	useEffect(() => {
-		if (!player.current) return;
-		const _player = player.current.getInternalPlayer();
-		_player.seekTo(0);
-		_player.stopVideo();
-		console.log('video change trigerred xcv xcv xc v');
-		signalDispatch({ type: 'SET_TRANSITION', transition: false });
-	}, [videoId]);
+	useEffect(loadNewVideo, [videoId]);
 
 	const onStateChange = (e) => {
 		const { data } = e;
-		const _player = player.current && player.current.getInternalPlayer();
-		/*
-		When user seeks a video, the following events are fired in order
-		Video paused (2) -> Video Playing (1)
-		*/
+		const player = getCurrentPlayer();
+		if (!player) return;
+
 		switch (data) {
 			case -1:
 				console.log('Case -1 Video unstarted');
@@ -69,12 +72,13 @@ function Player(props) {
 
 			case 0:
 				console.log('Case 0 Video Ended');
+				break;
 
 			case 1:
 				// PLAY
 				console.log('Case 1 Video Play');
 				signalDispatch({ type: 'SET_TRANSITION', transition: false });
-				_player && _player.playVideo();
+				player.playVideo();
 
 				emitVideoState(
 					'PLAY',
