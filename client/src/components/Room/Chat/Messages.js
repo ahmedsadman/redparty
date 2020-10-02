@@ -60,7 +60,7 @@ const Message = (props) => {
 		</MessageContainer>
 	) : (
 		<MessageContainer adminMessage className={props.className}>
-			<Text>{props.children}</Text>
+			<Text adminMessage>{props.children}</Text>
 		</MessageContainer>
 	);
 };
@@ -86,15 +86,20 @@ const MessageContainer = styled.div`
 `;
 
 const User = styled.div`
-	font-weight: 800;
+	font-weight: 500;
 	font-size: 0.85em;
+	margin-bottom: 3px;
+	margin-left: 8px;
 `;
 
-const Text = styled.p`
-	margin: 0;
-	padding: 0;
+const Text = styled.div`
+	padding: 8px 10px;
 	font-weight: 500;
 	font-size: 0.9em;
+	background-color: ${(props) =>
+		props.adminMessage ? 'transparent' : '#eee'};
+	width: ${(props) => (props.adminMessage ? 'auto' : '80%')};
+	border-radius: 15px;
 `;
 
 export default Messages;

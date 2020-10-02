@@ -5,6 +5,7 @@ import Messages from './Messages';
 import { Input } from '../../common/FormControls';
 import { Button } from '../../common';
 import { UserContext } from '../../../contexts/UserContext';
+import { colors } from '../../../config/colors';
 
 function Chat(props) {
 	const { socket } = props;
@@ -35,8 +36,11 @@ function Chat(props) {
 					onChange={onMessageChange}
 					required
 				/>
-				<Button type='submit' style={{ fontSize: '0.8em' }}>
-					Send
+				<Button type='submit' style={sendButtonStyle}>
+					<ion-icon
+						name='paper-plane'
+						style={{ fontSize: '1.2em' }}
+					></ion-icon>
 				</Button>
 			</MessageSend>
 		</StyledChat>
@@ -55,6 +59,12 @@ const StyledChat = styled.div`
 	padding: 10px;
 	box-sizing: border-box;
 `;
+
+const sendButtonStyle = {
+	minWidth: 0,
+	padding: '0 20px',
+	backgroundColor: colors.primaryColor,
+};
 
 const MessageSend = styled.form`
 	display: flex;
