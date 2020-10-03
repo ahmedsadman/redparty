@@ -5,6 +5,7 @@ import Topbar from '../common/Topbar';
 import Player from './Player';
 import Chat from './Chat/Chat';
 import Options from './Options';
+import { Spinner } from '../common/Spinner';
 import { createConnection, bindSocketEvents } from '../../utils/socket';
 import { getVideoId } from '../../utils/helper';
 import { UserContext } from '../../contexts/UserContext';
@@ -13,6 +14,8 @@ import { SignalContext } from '../../contexts/SignalContext';
 function Room(props) {
 	const [isHost, setHost] = useState(false);
 	const [socket, setSocket] = useState(null);
+	const [roomLoading, setRoomLoading] = useState(true);
+
 	const { dispatch: userDispatch, userData } = useContext(UserContext);
 	const { dispatch: signalDispatch } = useContext(SignalContext);
 
@@ -61,9 +64,15 @@ function Room(props) {
 		});
 
 		console.log('is host', isHost);
+		setRoomLoading(false);
 	};
 
-	useEffect(init, []);
+	useEffect(
+		() => {
+			init();
+		}, // eslint-disable-next-line
+		[]
+	);
 
 	const showInviteModal = async () => {
 		await Swal.fire({
@@ -109,21 +118,28 @@ function Room(props) {
 	return (
 		<React.Fragment>
 			<Topbar />
-			<Container fluid style={{ margin: '0 3%' }}>
-				<Row>
-					<Col md={8}>
-						<Player socket={socket} videoId={userData.videoId} />
-					</Col>
-					<Col md={4}>
-						<Options
-							onInvite={showInviteModal}
-							alertNotImplemented={alertNotImplemented}
-							onVideoChange={onVideoChange}
-						/>
-						<Chat socket={socket} />
-					</Col>
-				</Row>
-			</Container>
+			{roomLoading ? (
+				<Spinner />
+			) : (
+				<Container fluid style={{ margin: '0 3%' }}>
+					<Row>
+						<Col md={8}>
+							<Player
+								socket={socket}
+								videoId={userData.videoId}
+							/>
+						</Col>
+						<Col md={4}>
+							<Options
+								onInvite={showInviteModal}
+								alertNotImplemented={alertNotImplemented}
+								onVideoChange={onVideoChange}
+							/>
+							<Chat socket={socket} />
+						</Col>
+					</Row>
+				</Container>
+			)}
 		</React.Fragment>
 	);
 }

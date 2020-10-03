@@ -1,5 +1,6 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
+import { spinAnimation } from './Spinner';
 import { colors } from '../../config/colors';
 
 export const Button = ({ children, isLoading, ...props }) => (
@@ -16,16 +17,11 @@ export const Button = ({ children, isLoading, ...props }) => (
 	</StyledButton>
 );
 
-const spin = keyframes`
-	0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}`;
-
 const Loading = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	animation: ${spin} 2s linear infinite;
+	animation: ${spinAnimation} 2s linear infinite;
 `;
 
 const StyledButton = styled.button`
