@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Container, Row, Col, Hidden } from 'react-grid-system';
+import { Container, Row, Col } from 'react-grid-system';
 import Swal from 'sweetalert2';
 import Topbar from '../common/Topbar';
 import Player from './Player';
@@ -18,11 +18,6 @@ function Room(props) {
 
 	let _isHost = false;
 	let _socket = null;
-
-	useEffect(() => {
-		console.log(props);
-		init();
-	}, []);
 
 	const init = async () => {
 		const hostId = props.location.state && props.location.state.hostId;
@@ -64,7 +59,11 @@ function Room(props) {
 			userDispatch,
 			signalDispatch,
 		});
+
+		console.log('is host', isHost);
 	};
+
+	useEffect(init, []);
 
 	const showInviteModal = async () => {
 		await Swal.fire({

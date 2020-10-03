@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Hidden, Container } from 'react-grid-system';
+import { Row, Col, Hidden } from 'react-grid-system';
 import styled from 'styled-components';
 import { colors } from '../../config/colors';
 

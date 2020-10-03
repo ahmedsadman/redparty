@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { createConnection } from '../../utils/socket';
 import { Container, Row, Col, Hidden } from 'react-grid-system';
 import styled from 'styled-components';
@@ -73,7 +73,7 @@ function Welcome(props) {
 					</Col>
 
 					<Col xs={12} md={5}>
-						<img src='hero-banner.svg' />
+						<img src='hero-banner.svg' alt='' />
 					</Col>
 
 					<Hidden xs>

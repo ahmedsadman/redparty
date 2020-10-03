@@ -119,6 +119,7 @@ export const bindSocketEvents = (socket, dispatchFunc) => {
 					default:
 						break;
 				}
+				break;
 
 			default:
 				break;
