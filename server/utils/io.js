@@ -79,6 +79,7 @@ exports.setupIO = (io) => {
 				'newMessage',
 				generateServerMessage('updateVideoId', { videoId, user })
 			);
+			Rooms.setVideoId(user.roomId, videoId);
 		});
 
 		socket.on('disconnect', () => {

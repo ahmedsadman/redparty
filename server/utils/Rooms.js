@@ -12,6 +12,12 @@ class Rooms {
 		if (!this.rooms[roomId]) this.rooms[roomId] = { users: [], videoId };
 	}
 
+	setVideoId(roomId, videoId) {
+		if (this.rooms[roomId]) {
+			this.rooms[roomId]['videoId'] = videoId;
+		}
+	}
+
 	getRoom(roomId) {
 		return this.rooms[roomId];
 	}
