@@ -34,7 +34,7 @@ function Messages(props) {
 			clientHeight + scrollTop + newMessageHeight + lastMessageHeight >=
 			scrollHeight - 15
 		) {
-			messageEnd.current.scrollIntoView({ behavior: 'smooth' });
+			messageEnd.current.scrollIntoView();
 		}
 	};
 
