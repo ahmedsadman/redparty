@@ -35,10 +35,16 @@ const Forms = (props) => {
 	const [hostDisplayName, setHostDisplayName] = useState('');
 	const [videoUrl, setVideoUrl] = useState('');
 	const [joinDisplayName, setJoinDisplayName] = useState('');
+	const [joinUrl, setJoinUrl] = useState('');
 
 	const _onHost = (e) => {
 		e.preventDefault();
 		props.onHost(hostDisplayName, videoUrl);
+	};
+
+	const _onJoin = (e) => {
+		e.preventDefault();
+		props.onJoin(joinDisplayName, joinUrl);
 	};
 
 	return (
@@ -84,14 +90,15 @@ const Forms = (props) => {
 					buttonLabel='Join'
 					header='Join existing one!'
 					loading={props.loading}
+					onSubmit={_onJoin}
 				>
 					<Controls>
 						<Label htmlFor='username2'>Display Name</Label>
 						<Input
 							type='text'
 							name='username2'
-							value={props.username}
-							onChange={props.onChange}
+							value={joinDisplayName}
+							onChange={(e) => setJoinDisplayName(e.target.value)}
 							id='name2'
 							placeholder='Dursley'
 							required
@@ -103,6 +110,8 @@ const Forms = (props) => {
 							type='text'
 							name='url'
 							id='url'
+							value={joinUrl}
+							onChange={(e) => setJoinUrl(e.target.value)}
 							placeholder='redparty.netlify.app/room/asD2123f'
 						/>
 					</Controls>

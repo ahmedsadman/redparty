@@ -31,21 +31,24 @@ function Room(props) {
 
 		if (!hostId) {
 			// Not a host
-			// ask for username
-			const usernamePrompt = await Swal.fire({
-				title: 'Enter your display name',
-				input: 'text',
-				allowOutsideClick: false,
-			});
-			username = usernamePrompt.value;
+			_isHost = false;
+
+			// TODO: Show loading screen till connection is created
+			if (!username) {
+				// ask for username
+				const usernamePrompt = await Swal.fire({
+					title: 'Enter your display name',
+					input: 'text',
+					allowOutsideClick: false,
+				});
+				username = usernamePrompt.value;
+			}
+
 			const roomId = props.match.params.id;
 			_socket = await createConnection(username, roomId);
-
-			// doesn't have video id, need to be fetched from server
 		} else {
 			_isHost = true;
 			_socket = props.location.socket;
-			console.log('host socket', _socket);
 
 			// update videoid in global context
 			userDispatch({ type: 'UPDATE_VIDEO_ID', videoId });

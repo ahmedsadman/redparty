@@ -28,9 +28,19 @@ function Welcome(props) {
 		setHostLoading(false);
 
 		props.history.push({
-			pathname: `/room/${socket.id}`,
+			pathname: `/room/${socket.id}`, // socket.id === roomid
 			state: { hostId: socket.id, username, videoId },
 			socket,
+		});
+	};
+
+	const onJoin = (username, joinUrl) => {
+		// TODO: Add verification for join url
+		const splitUrl = joinUrl.split('/');
+		const roomId = splitUrl[splitUrl.length - 1];
+		props.history.push({
+			pathname: `/room/${roomId}`,
+			state: { username },
 		});
 	};
 
@@ -76,7 +86,11 @@ function Welcome(props) {
 			<Container fluid>
 				<Row align='center' style={styles.formContainer}>
 					<Col md={2}></Col>
-					<StartForm onHost={onHost} hostLoading={hostLoading} />
+					<StartForm
+						onHost={onHost}
+						onJoin={onJoin}
+						hostLoading={hostLoading}
+					/>
 					<Col md={2}></Col>
 					<div className='dummy' ref={(el) => (formEnd = el)}></div>
 				</Row>
