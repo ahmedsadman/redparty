@@ -93,6 +93,7 @@ function Player(props) {
 				// PAUSE
 				console.log('Case 2 Video paused');
 				emitVideoState('PAUSE');
+				signalDispatch({ type: 'SET_TRANSITION', transition: false });
 				break;
 
 			case 3:
