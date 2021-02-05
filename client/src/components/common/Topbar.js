@@ -7,6 +7,13 @@ const Topbar = (props) => (
 	<Row nogutter>
 		<Col xs={12}>
 			<StyledBar>
+				<img
+					src='redparty-logo.svg'
+					alt='logo'
+					width='auto'
+					height='25px'
+					style={{ marginRight: '8px' }}
+				/>
 				<span style={{ color: colors.primaryColor }}>RED</span>
 				&nbsp;PARTY
 			</StyledBar>

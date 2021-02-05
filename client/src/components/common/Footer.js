@@ -4,38 +4,56 @@ import { colors } from '../../config/colors';
 
 const Footer = (props) => (
 	<StyledFooter>
-		Crafted with&nbsp;
-		<ion-icon
-			name='heart-outline'
-			style={{ color: colors.primaryColor, fontSize: '1.3em' }}
-		></ion-icon>
-		&nbsp;by&nbsp;
-		<a
-			href='https://github.com/ahmedsadman'
-			target='_blank'
-			rel='noopener noreferrer'
+		<div
+			style={{
+				display: 'flex',
+				alignItems: 'center',
+			}}
 		>
-			ahmedsadman
-		</a>
-		&nbsp;(Source at&nbsp;
-		<a
-			href='https://github.com/ahmedsadman/redparty'
-			target='_blank'
-			rel='noopener noreferrer'
-		>
+			Crafted with&nbsp;
 			<ion-icon
-				name='logo-github'
-				style={{ fontSize: '1.3em' }}
+				name='heart-outline'
+				style={{ color: colors.primaryColor, fontSize: '1.3em' }}
 			></ion-icon>
-			)
-		</a>
+			&nbsp;by&nbsp;
+			<a
+				href='https://github.com/ahmedsadman'
+				target='_blank'
+				rel='noopener noreferrer'
+			>
+				ahmedsadman
+			</a>
+			&nbsp;(Source at&nbsp;
+			<a
+				href='https://github.com/ahmedsadman/redparty'
+				target='_blank'
+				rel='noopener noreferrer'
+			>
+				<ion-icon
+					name='logo-github'
+					style={{ fontSize: '1.3em' }}
+				></ion-icon>
+				)
+			</a>
+		</div>
+		<div>
+			Logo by{' '}
+			<a
+				href='https://github.com/IshrakAbedin'
+				target='_blank'
+				rel='noopener noreferrer'
+			>
+				IshrakAbedin
+			</a>
+		</div>
 	</StyledFooter>
 );
 
 const StyledFooter = styled.div`
-	height: 40px;
-	margin-top: -40px;
+	height: 45px;
+	margin-top: -45px;
 	display: flex;
+	flex-direction: column;
 	position: relative;
 	flex: 1;
 	align-items: center;
