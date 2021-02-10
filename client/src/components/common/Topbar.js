@@ -8,7 +8,7 @@ const Topbar = (props) => (
 		<Col xs={12}>
 			<StyledBar>
 				<img
-					src='redparty-logo.svg'
+					src='/redparty-logo.svg'
 					alt='logo'
 					width='auto'
 					height='25px'
