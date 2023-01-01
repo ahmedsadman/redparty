@@ -2,7 +2,7 @@
 
 > LIVE: https://redparty.netlify.app
 
-**(WORK IN PROGRESS)**
+**THIS PROJECT WAS HOSTED IN FREE HEROKU TIER. AS HEROKU IS NO LONGER FREE, THIS PROJECT DOES NOT HAVE THE LIVE BACKEND. IF YOU WANT TO USE IT, PLEASE CLONE THE REPO AND DO THE NECESSARY SETUP, IT WILL BE WORTH YOUR WHILE!**
 
 A React based web application that let's you host Youtube watch party with friends. Sync videos and chat with friends in real-time. This application uses Socket.io to handle connections.
 
